@@ -30,7 +30,14 @@ def _(
             color_discrete_sequence=px.colors.qualitative.D3,
         )
         fig.update_layout(
-            legend=dict(yanchor="bottom", y=0.01, xanchor="right", x=0.99)
+            legend=dict(
+                yanchor="bottom",
+                y=0.01,
+                xanchor="right",
+                x=0.99,
+                bgcolor="rgba(255,255,255,0.7)",
+                title=None,
+            )
         )
         return fig
 
@@ -45,8 +52,9 @@ def _(
                             "toImageButtonOptions": {
                                 "format": format.value,
                                 "filename": f"roc_{split.value}",
-                                "height": 240 * 1.2,
-                                "width": 480 * 1.2,
+                                "height": 340,
+                                "width": 490,
+                                "scale": 2,
                             }
                         },
                     ),
@@ -84,8 +92,25 @@ def _(
 
 
 @app.cell
+def _(mo):
+    split = mo.ui.dropdown(
+        options=("all", "face", "text"), value="all", label="Protocol"
+    )
+    format = mo.ui.dropdown(
+        options=("png", "svg", "jpeg", "webp"),
+        value="svg",
+        label="Download Plot Format",
+    )
+    table_format = mo.ui.dropdown(
+        options=("markdown", "latex"), value="markdown", label="Table Format"
+    )
+    return format, split, table_format
+
+
+@app.cell
 def _():
     import marimo as mo
+    import numpy as np
     import pandas as pd
     import sklearn
     import plotly.express as px
@@ -102,7 +127,7 @@ def _():
         "unifd": "UniFD",
         "fatformer": "FatFormer",
     }
-    return MODELS, go, mo, pd, px, sklearn
+    return MODELS, go, mo, np, pd, px, sklearn
 
 
 @app.cell
@@ -184,22 +209,6 @@ def _(MODELS, df_all_models, pd, sklearn):
 
 
 @app.cell
-def _(mo):
-    split = mo.ui.dropdown(
-        options=("all", "face", "text"), value="all", label="Protocol"
-    )
-    format = mo.ui.dropdown(
-        options=("png", "svg", "jpeg", "webp"),
-        value="png",
-        label="Download Plot Format",
-    )
-    table_format = mo.ui.dropdown(
-        options=("markdown", "latex"), value="markdown", label="Table Format"
-    )
-    return format, split, table_format
-
-
-@app.cell
 def _(MODELS, get_df, pd, sklearn, split):
     def roc_df(split):
         records = []
@@ -223,7 +232,7 @@ def _(MODELS, get_df, pd, sklearn, split):
 
 
 @app.cell
-def _(MODELS, get_df, go):
+def _(MODELS, get_df, go, np):
     def hist_plot(split):
         df = get_df(model=None, split=split)
         df.label = df.label.replace(
@@ -248,25 +257,32 @@ def _(MODELS, get_df, go):
 
         # 2. Initialize a Figure object
         fig = go.Figure()
+        bandwidth = 0.04
 
         # 3. Loop through each model to create split violin traces
         for i, model_name in enumerate(unique_models):
             # --- Bonafide Trace (Right Side) ---
             df_bonafide = df[(df["model"] == model_name) & (df["label"] == "bonafide")]
+            kw = dict(
+                bandwidth=bandwidth,
+                # span=[0,1],
+                spanmode="hard",
+                scalegroup=model_name,
+                points=False,
+                box_visible=False,
+                meanline_visible=False,
+                showlegend=(i == 0),
+            )
             fig.add_trace(
                 go.Violin(
                     x=df_bonafide["model"],
                     y=df_bonafide["score"],
-                    scalegroup=model_name,
                     name=legend_map["bonafide"],
                     legendgroup=legend_map["bonafide"],
                     side="positive",  # Swapped to 'positive' (right) to match Matplotlib
-                    points=False,
-                    box_visible=False,
-                    meanline_visible=False,
                     line_color=color_map["bonafide"]["line"],
                     fillcolor=color_map["bonafide"]["fill"],
-                    showlegend=(i == 0),
+                    **kw,
                 )
             )
             # --- Attack Trace (Left Side) ---
@@ -275,16 +291,12 @@ def _(MODELS, get_df, go):
                 go.Violin(
                     x=df_attack["model"],
                     y=df_attack["score"],
-                    scalegroup=model_name,
                     name=legend_map["attack"],
                     legendgroup=legend_map["attack"],
                     side="negative",  # Swapped to 'negative' (left) to match Matplotlib
-                    points=False,
-                    box_visible=False,
-                    meanline_visible=False,
                     line_color=color_map["attack"]["line"],
                     fillcolor=color_map["attack"]["fill"],
-                    showlegend=(i == 0),
+                    **kw,
                 )
             )
 
@@ -296,7 +308,7 @@ def _(MODELS, get_df, go):
             violingap=0,
             # plot_bgcolor='white',
             yaxis=dict(
-                range=[0, 1],
+                # range=[0, 1],
                 #     gridcolor='lightgrey',
                 #     gridwidth=1,
                 #     griddash='dash',
@@ -317,10 +329,11 @@ def _(MODELS, get_df, go):
             xaxis_title=None,
             yaxis_title=None,
             legend=dict(
-                x=0.98,
+                x=0.99,
                 y=0.02,
                 xanchor="right",
                 yanchor="bottom",
+                bgcolor="rgba(255,255,255,0.7)",
                 # bordercolor='black',
                 # borderwidth=1
             ),
