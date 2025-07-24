@@ -28,7 +28,7 @@ jobs:
 
       - name: 📄 Export notebook
         run: |
-          uvx marimo export html-wasm --sandbox -o html --mode run --no-show-code notebook.py
+          uvx marimo export html-wasm --sandbox -o html --mode run notebook.py
 
       - name: 📦 Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
