@@ -34,7 +34,7 @@ def _(
         )
         return fig
 
-    _roc_plot = mo.vstack(
+    _plots = mo.vstack(
         [
             mo.hstack([split, format]),
             mo.vstack(
@@ -67,28 +67,19 @@ def _(
             ),
         ]
     )
-    _table = mo.vstack(
-        [
-            # table_format,
-            mo.md(
+    _table_md = mo.md(
                 metrics_df.to_markdown(index=False)
                 if table_format.value == "markdown"
                 else "```\n"
                 + metrics_df.to_latex(index=False, float_format="%.1f")
                 + "\n```"
-            ),
-        ]
-    )
+            )
+    _table_latex = "```\n" + metrics_df.to_latex(index=False, float_format="%.1f") + "\n```"
     mo.md(f"""
-
-    {mo.hstack([_roc_plot, _table], widths=[3, 1])}
+    {_plots}
+    {_table_md}
+    {_table_latex}
     """)
-    return
-
-
-@app.cell
-def _(metrics_df, mo):
-    mo.md("```\n" + metrics_df.to_latex(index=False, float_format="%.1f") + "\n```")
     return
 
 
