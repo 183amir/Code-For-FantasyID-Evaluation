@@ -100,6 +100,9 @@ def _():
     import plotly.express as px
     import plotly.graph_objects as go
     import plotly.io as pio
+    import pyarrow  # noqa: F401
+    import tabulate  # noqa: F401
+    import jinja2  # noqa: F401
 
     pio.templates.default = "plotly_white"
     MODELS = {
