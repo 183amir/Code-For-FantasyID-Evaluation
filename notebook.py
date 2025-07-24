@@ -106,10 +106,10 @@ def _():
 
 
 @app.cell
-def _(MODELS, mo, pd):
+def _(MODELS, pd):
     def df_of_model(model):
         df = pd.read_parquet(
-            mo.notebook_location() / "public" / model / "detection.parquet",
+            f"https://raw.githubusercontent.com/183amir/Code-For-FantasyID-Evaluation/refs/heads/main/public/{model}/detection.parquet",
             columns=("label", "score"),
             filters=[("protocol", "==", "test")],
         )
