@@ -427,7 +427,7 @@ wheels = [
 
 [[package]]
 name = "marimo"
-version = "0.14.12"
+version = "0.14.13"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -447,9 +447,9 @@ dependencies = [
     { name = "uvicorn" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0b/6d/8c0bdb68d608561e3039718f171ede292e7da7e7580a51b1f4b2ce6e204f/marimo-0.14.12.tar.gz", hash = "sha256:cf18513e30a5d2e8864930885b674dd89cbc9ad3a5e128b9ecfa48323de6d14f", size = 29622446 }
+sdist = { url = "https://files.pythonhosted.org/packages/eb/0b/cf4ca8dddb1bfa22c338509b7300e7e32c4426e16966da71415b4bffc7c6/marimo-0.14.13.tar.gz", hash = "sha256:324e9128fb9ba6b5c4702dcaf023326ca8d186e0dcebc8d2598451fbe5cf5af7", size = 29625674 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/79/fa/d802cd61fb4714c17529057dc4b07d48c3e115d0af331907b3d19f5482f6/marimo-0.14.12-py3-none-any.whl", hash = "sha256:154d168ceb8b9f4cc10f8cd9f6299cf0c5d8643b0291370a9e64a88b2f517ed3", size = 30118091 },
+    { url = "https://files.pythonhosted.org/packages/d3/07/6717c8e2f94b945aa0cd092b90ef80740921da99ed89d634cf70333f9178/marimo-0.14.13-py3-none-any.whl", hash = "sha256:84e6fe5916dd4ea1a4b43cf9231f12654ac830db79c08716e60fa8dfbd796dcb", size = 30121038 },
 ]
 
 [package.optional-dependencies]
@@ -481,7 +481,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "marimo", extras = ["recommended", "lsp"], specifier = "==0.14.12" },
+    { name = "marimo", extras = ["lsp", "recommended"], specifier = ">=0.14.12" },
     { name = "pandas", specifier = ">=2.0" },
     { name = "plotly", specifier = ">=5.21" },
     { name = "scikit-learn", specifier = ">=1.6.0" },
@@ -1171,11 +1171,11 @@ wheels = [
 
 [[package]]
 name = "sqlglot"
-version = "27.2.0"
+version = "27.3.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/83/45/ddb0c8f8611e97ea112032572c3f30aabc8e1293b0e3facfd7e88ff68f25/sqlglot-27.2.0.tar.gz", hash = "sha256:55ed9fb61951632a9fab006c91f451801559d8e1eb09b75563a8259e46017828", size = 5389495 }
+sdist = { url = "https://files.pythonhosted.org/packages/53/d0/eb3f7c394db92cf833913401420fc63f7c43b934fcfdbcdb6cfe86775819/sqlglot-27.3.0.tar.gz", hash = "sha256:96b1ff8079a9ac5e9fadc783e9934c565ca22c2fcef1a68e7f2b5fbd1730778a", size = 5391143 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/28/46/03e76769b0fac4b91d5219a1076784eb45c508a36f54bf4cc08aa4655916/sqlglot-27.2.0-py3-none-any.whl", hash = "sha256:d0366619729790173d9a3fe3f081d3e57f93d05de8655f72cb43e564ba28e625", size = 487242 },
+    { url = "https://files.pythonhosted.org/packages/a6/a5/c4f31a10862ea7683f4985963288a93ddb6333a71447d4aa5858cf030ac5/sqlglot-27.3.0-py3-none-any.whl", hash = "sha256:80f643b301dd6ec093964af5a4684974f39bf5b9f6096e0e0ea6ac3a0e31a058", size = 488073 },
 ]
 
 [[package]]

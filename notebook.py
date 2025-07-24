@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.14.12"
+__generated_with = "0.14.13"
 app = marimo.App(width="full", app_title="Code For FantasyID Evaluation")
 
 
@@ -68,13 +68,13 @@ def _(
         ]
     )
     _table_md = mo.md(
-                metrics_df.to_markdown(index=False)
-                if table_format.value == "markdown"
-                else "```\n"
-                + metrics_df.to_latex(index=False, float_format="%.1f")
-                + "\n```"
-            )
-    _table_latex = "```\n" + metrics_df.to_latex(index=False, float_format="%.1f") + "\n```"
+        metrics_df.to_markdown(index=False)
+        if table_format.value == "markdown"
+        else "```\n" + metrics_df.to_latex(index=False, float_format="%.1f") + "\n```"
+    )
+    _table_latex = (
+        "```\n" + metrics_df.to_latex(index=False, float_format="%.1f") + "\n```"
+    )
     mo.md(f"""
     {_plots}
     {_table_md}
@@ -106,10 +106,10 @@ def _():
 
 
 @app.cell
-def _(MODELS, pd):
+def _(MODELS, mo, pd):
     def df_of_model(model):
         df = pd.read_parquet(
-            f"https://raw.githubusercontent.com/183amir/Code-For-FantasyID-Evaluation/refs/heads/main/scores/{model}/detection.parquet",
+            mo.notebook_location() / "public" / model / "detection.parquet",
             columns=("label", "score"),
             filters=[("protocol", "==", "test")],
         )

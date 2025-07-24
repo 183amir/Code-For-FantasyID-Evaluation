@@ -1,7 +1,7 @@
 
 [project]
 dependencies = [
-  "marimo[recommended,lsp]==0.14.12",
+  "marimo[lsp,recommended]>=0.14.12",
   "plotly>=5.21",
   "scikit-learn>=1.6.0",
   "pandas>=2.0",
