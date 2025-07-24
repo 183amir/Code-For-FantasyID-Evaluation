@@ -1,0 +1,57 @@
+name: Deploy to GitHub Pages
+
+# Defines when the workflow will run
+on:
+  push:
+    branches: ["main"] # Trigger on pushes to main branch
+  workflow_dispatch: # Allow manual triggering from the GitHub UI
+
+# Concurrency settings to manage multiple workflow runs
+concurrency:
+  group: "pages" # Only one workflow in the 'pages' group can run at a time
+  cancel-in-progress: false # Don't cancel in-progress runs when a new one is triggered
+
+# Environment variables used by the workflow
+env:
+  UV_SYSTEM_PYTHON: 1 # Use system Python with uv package manager
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🚀 Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: 📄 Export notebook
+        run: |
+          uvx marimo export html-wasm --sandbox -o html --mode run --no-show-code notebook.py
+
+      - name: 📦 Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: html
+
+  # The deploy job publishes the built site to GitHub Pages
+  deploy:
+    needs: build # This job depends on the build job completing successfully
+
+    # Required permissions for the GitHub Pages deployment
+    permissions:
+      pages: write # Permission to deploy to Pages
+      id-token: write # Permission to verify the deployment
+
+    # Configure the deployment environment
+    environment:
+      name: github-pages # Deploy to the github-pages environment
+      url: ${{ steps.deployment.outputs.page_url }} # Use the URL from the deployment step
+
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+    steps:
+      # Deploy the site to GitHub Pages using the official action
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment # ID used to reference this step's outputs
+        uses: actions/deploy-pages@v4 # GitHub's official Pages deployment action
