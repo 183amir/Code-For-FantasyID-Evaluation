@@ -58,13 +58,79 @@ def _(
     _table_latex = (
         "```\n" + metrics_df.to_latex(index=False, float_format="%.1f") + "\n```"
     )
+    _images = mo.vstack(
+        [
+            mo.hstack(
+                [
+                    mo.image(
+                        mo.notebook_location() / "public" / "chinese.png",
+                        width="50%",
+                    ),
+                    mo.image(
+                        mo.notebook_location() / "public" / "turkey.png",
+                        width="50%",
+                    ),
+                ]
+            ),
+            "Examples of original digital versions of FantasyID cards.",
+        ],
+    )
+    _header = (
+        mo.md(f"""
+    # <span style="color:blue">FantasyID</span>: A dataset for detecting digital manipulations of ID-documents
+    [Pavel Korshunov](<pavel.korshunov@idiap.ch>),
+    [Amir Mohammadi](<amir.mohammadi@idiap.ch>),
+    [Vidit Vidit](<vidit.vidit@idiap.ch>),
+    [Christophe Ecabert](<christophe.ecabert@idiap.ch>),
+    [Sebastien Marcel](<Sebastien.Marcel@idiap.ch>)
+
+    Idiap Research Institute, Martigny, Switzerland
+
+    IJCB 2025
+
+    {_images}
+
+    ## Summary
+    <div style="text-align: justify">
+    Advancements in image generation led to the availabil-
+    ity of easy-to-use tools for malicious actors to create forged
+    images. These tools pose a serious threat to the widespread
+    Know Your Customer (KYC) applications, requiring ro-
+    bust systems for detection of the forged Identity Documents
+    (IDs). To facilitate the development of the detection algo-
+    rithms, in this paper, we propose a novel publicly available
+    (including commercial use) dataset, FantasyID, which mim-
+    ics real-world IDs but without tampering with legal docu-
+    ments and, compared to previous public datasets, it does
+    not contain generated faces or specimen watermarks. Fan-
+    tasyID contains ID cards with diverse design styles, lan-
+    guages, and faces of real people. To simulate a realis-
+    tic KYC scenario, the cards from FantasyID were printed
+    and captured with three different devices, constituting the
+    bonafide class. We have emulated digital forgery/injection
+    attacks that could be performed by a malicious actor to tam-
+    per the IDs using the existing generative tools. The current
+    state-of-the-art forgery detection algorithms, such as Tru-
+    For, MMFusion, UniFD, and FatFormer, are challenged by
+    FantasyID dataset. It especially evident, in the evaluation
+    conditions close to practical, with the operational thresh-
+    old set on validation set so that false positive rate is at 10%,
+    leading to false negative rates close to 50% across the board
+    on the test set. The evaluation experiments demonstrate that
+    FantasyID dataset is complex enough to be used as an eval-
+    uation benchmark for detection algorithms.
+    </div>
+    """)
+        .center()
+        .style(text_align="center")
+    )
     mo.md(f"""
-    # FantasyID Dataset Paper
+    {mo.callout(_header, "info")}
     {_plots}
     {mo.hstack([selected_protocol, selected_threshold, "The threshold for FPR, FNR, and HTER values are fixed from the validation set."])}
     {_table_md}
     {_table_latex}
-    """)
+    """).center()
     return
 
 
@@ -85,7 +151,7 @@ def _(mo):
         options=("markdown", "latex"), value="markdown", label="Table Format"
     )
     selected_threshold = mo.ui.slider(
-        start=0, stop=1, step=0.01, value=0.5, label="Threshold"
+        start=0, stop=1, step=0.01, value=0.5, label="Threshold for ACC and F1"
     )
     selected_protocol = mo.ui.dropdown(
         options=("val", "test"), value="test", label="Group"
