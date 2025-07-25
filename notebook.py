@@ -63,11 +63,11 @@ def _(
             mo.hstack(
                 [
                     mo.image(
-                        mo.notebook_location() / "public" / "chinese.png",
+                        str(mo.notebook_location() / "public" / "chinese.png"),
                         width="50%",
                     ),
                     mo.image(
-                        mo.notebook_location() / "public" / "turkey.png",
+                        str(mo.notebook_location() / "public" / "turkey.png"),
                         width="50%",
                     ),
                 ]
@@ -77,7 +77,7 @@ def _(
     )
     _header = (
         mo.md(f"""
-    # <span style="color:blue">FantasyID</span>: A dataset for detecting digital manipulations of ID-documents
+    # <div style="text-align: center"><span style="color:blue">FantasyID</span>: A dataset for detecting digital manipulations of ID-documents</div>
     [Pavel Korshunov](<pavel.korshunov@idiap.ch>),
     [Amir Mohammadi](<amir.mohammadi@idiap.ch>),
     [Vidit Vidit](<vidit.vidit@idiap.ch>),
